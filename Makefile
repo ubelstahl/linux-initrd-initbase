@@ -29,6 +29,10 @@
 
 ###############################################################################
 
+	BUSYBOX_EXIT_MEANS_REBOOT := false
+
+###############################################################################
+
 	CC      := musl-gcc
 	CFLAGS  := -Wall -Wextra -Os -fPIC -fpermissive
 	LDFLAGS := -static -L/usr/lib/musl/lib/ -L/usr/lib/
@@ -62,6 +66,10 @@ CFLAGS  += -MMD -MP \
 	"-DPROJECT_AUTHOR=\"$(PROJECT_AUTHOR)\"" \
 	"-DPROJECT_SOURCE=\"$(PROJECT_SOURCE)\"" \
 	$(addprefix -I, $(INCLUDES))
+
+ifeq ($(BUSYBOX_EXIT_MEANS_REBOOT),true)
+    CFLAGS += -DBUSYBOX_EXIT_MEANS_REBOOT=1
+endif
 
 TOTAL_OBJ := $(words $(OBJS) $(BUILD_PATH))
 
